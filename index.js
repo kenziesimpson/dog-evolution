@@ -44,12 +44,12 @@ function divideFoodPack(generation, numWolves) {
   // Calculate size of pack
   let packSize = getPackSize(generation)
   // Calculate how much food each wolf in a pack gets (from 0.3 to 2.0)
-  let foodPack = -1.0 / (packSize + 0.6) + 2.0
+  let foodPack = -1.0 / (packSize + 0.6) + 1.5
 
   // If there are too many wolves in the pack,
   // there is not enough food in the forest
   if (packSize / numWolves > 0.6) {
-    foodPack -= (-1.0 / (packSize + 0.6) + 2.0) / 3.0
+    foodPack -= (-1.0 / (packSize + 0.6) + 2.0) / 2.5
   }
 
   return foodPack
@@ -138,6 +138,11 @@ function writeGeneration(generation, generationNum) {
 }
 
 function containsDomesticated(generation, generationNum) {
+  if (generationNum > 5000) {
+    console.log('After 5000 generations, a dog was not created. Here is the most recent generation:')
+    console.log()
+    console.log(JSON.stringify(generation, null, ' '))
+  }
   for (let wolf in generation) {
     if (generation[wolf].fear < 0.03 && generation[wolf].aggression < 0.35) {
       console.log('Domesticated dog found in generation ' + generationNum + '!')
