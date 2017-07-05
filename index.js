@@ -108,7 +108,7 @@ function generateFirst(numWolves) {
   let generation = {}
 
   for (let i = 0; i < numWolves; i++) {
-    let pack = 0.25 * Math.random() + 0.6
+    let pack = 0.25 * Math.random() + 0.45
     let aggression = 0.1 * Math.random() + 0.6
     let fear = 0.20 * Math.random() + 0.75
 
@@ -139,7 +139,7 @@ function writeGeneration(generation, generationNum) {
 
 function containsDomesticated(generation, generationNum) {
   for (let wolf in generation) {
-    if (generation[wolf].fear < 0.05) {
+    if (generation[wolf].fear < 0.03 && generation[wolf].aggression < 0.35) {
       console.log('Domesticated dog found in generation ' + generationNum + '!')
       console.log('wolf ' + wolf + ': ');
       console.log(JSON.stringify(generation[wolf], null, ' '))
@@ -256,12 +256,12 @@ while (!metRequirement) {
   // Mutation
   for (let wolf in newGeneration) {
     // Account for selective breeding by humans
-    if (newGeneration[wolf].fear <= 0.4) {
-      newGeneration[wolf].plasticity = newGeneration[wolf].plasticity + 0.045
+    if (newGeneration[wolf].fear <= 0.3) {
+      newGeneration[wolf].plasticity = bound(newGeneration[wolf].plasticity + 0.02)
     }
-    if (newGeneration[wolf].plasticity >= 0.45) {
-      newGeneration[wolf].playfullness = bound(newGeneration[wolf].playfullness + 0.11)
-      newGeneration[wolf].aggression = bound(newGeneration[wolf].aggression - 0.04)
+    if (newGeneration[wolf].plasticity >= 0.35) {
+      newGeneration[wolf].playfullness = bound(newGeneration[wolf].playfullness + 0.02)
+      newGeneration[wolf].aggression = bound(newGeneration[wolf].aggression - 0.01)
     }
 
     let toBeMutatedIndex = Math.trunc(50 * Math.random())
