@@ -1,0 +1,19 @@
+{
+  "name": "dog-evolution",
+  "version": "1.0.0",
+  "description": "a basic evolutionary algorithm simulating the evolution between wolves and dogs",
+  "main": "index.js",
+  "dependencies": {
+    "JSON": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "touch generations/temp && rm ./generations/* && node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/msimp19/dog-evolution"
+  },
+  "author": "Michael Simpson <michaelsimpson2019@gmail.com>",
+  "license": "ISC"
+}
