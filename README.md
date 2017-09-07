@@ -8,7 +8,7 @@ First, download the code
 ```git clone https://github.com/msimp19/dog-evolution.git```
 
 Then, build the program
-```npm i && mkdir generations```
+```npm i```
 
 To run a simulation
 ```npm start```
