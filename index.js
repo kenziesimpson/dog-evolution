@@ -6,7 +6,7 @@ const JSON = require('JSON')
 // Check to see if
 
 // Bounds value between 0.0 and 1.0
-function bound(val) {
+function bound (val) {
   if (val > 1.0) {
     return 1.0
   } else if (val < 0.0) {
@@ -17,7 +17,7 @@ function bound(val) {
 }
 
 // Checks the wolf object to see if it is in a pack
-function isInPack(wolf) {
+function isInPack (wolf) {
   if (wolf.pack >= 0.7) {
     return true
   }
@@ -26,7 +26,7 @@ function isInPack(wolf) {
 
 // generation is the JSON object which contains each wolf
 // wolves is a list of wolf objects
-function getPackSize(generation, numWolves) {
+function getPackSize (generation, numWolves) {
   let packSize = 0
 
   for (let wolf = 0; wolf < numWolves; wolf++) {
@@ -40,7 +40,7 @@ function getPackSize(generation, numWolves) {
 
 // Calculates the amount of food divided among the pack with
 // decreasing returns
-function divideFoodPack(generation, numWolves) {
+function divideFoodPack (generation, numWolves) {
   // Calculate size of pack
   let packSize = getPackSize(generation)
   // Calculate how much food each wolf in a pack gets (from 0.3 to 2.0)
@@ -56,7 +56,7 @@ function divideFoodPack(generation, numWolves) {
 }
 
 // Calculates the amount of food a lone wolf can hunt on its own
-function divideFoodIndividual(wolf) {
+function divideFoodIndividual (wolf) {
   // Multiply the aggression by a constant
   let foodIndividual = wolf.aggression * 1.3
 
@@ -69,9 +69,8 @@ function divideFoodIndividual(wolf) {
 }
 
 // Calculates the amount of food a wolf will recieve from humans
-function divideFoodHumans(wolf) {
+function divideFoodHumans (wolf) {
   let foodHuman = 0
-
 
   // If the wolf has low enough fear to approact humans, it will be fed by those humans
   if (wolf.fear <= 0.3) {
@@ -94,7 +93,7 @@ function divideFoodHumans(wolf) {
 }
 
 // Sums up the wolf's food from all sources
-function calculateFoodTotal(wolf, generation, numWolves) {
+function calculateFoodTotal (wolf, generation, numWolves) {
   let foodTotal = 0
   if (isInPack(wolf)) {
     foodTotal += divideFoodPack(generation, numWolves)
@@ -104,7 +103,7 @@ function calculateFoodTotal(wolf, generation, numWolves) {
 }
 
 // Generate the first generation of wolves
-function generateFirst(numWolves) {
+function generateFirst (numWolves) {
   let generation = {}
 
   for (let i = 0; i < numWolves; i++) {
@@ -116,11 +115,11 @@ function generateFirst(numWolves) {
     let playfullness = 0.15 * Math.random() + 0.05
 
     generation[i] = {
-      "pack": pack,
-      "aggression": aggression,
-      "fear": fear,
-      "plasticity": plasticity,
-      "playfullness": playfullness
+      'pack': pack,
+      'aggression': aggression,
+      'fear': fear,
+      'plasticity': plasticity,
+      'playfullness': playfullness
     }
   }
 
@@ -129,15 +128,15 @@ function generateFirst(numWolves) {
 }
 
 // Write a generation to its file
-function writeGeneration(generation, generationNum) {
-  fs.writeFile("./generations/generation_" + generationNum + ".json", JSON.stringify(generation, null, ' '), function(err) {
+function writeGeneration (generation, generationNum) {
+  fs.writeFile('./generations/generation_' + generationNum + '.json', JSON.stringify(generation, null, ' '), function (err) {
     if (err) {
       console.log(err)
     }
   })
 }
 
-function containsDomesticated(generation, generationNum) {
+function containsDomesticated (generation, generationNum) {
   if (generationNum > 5000) {
     console.log('After 5000 generations, a dog was not created. Here is the most recent generation:')
     console.log()
@@ -146,7 +145,7 @@ function containsDomesticated(generation, generationNum) {
   for (let wolf in generation) {
     if (generation[wolf].fear < 0.03 && generation[wolf].aggression < 0.35) {
       console.log('Domesticated dog found in generation ' + generationNum + '!')
-      console.log('wolf ' + wolf + ': ');
+      console.log('wolf ' + wolf + ': ')
       console.log(JSON.stringify(generation[wolf], null, ' '))
       console.log()
 
@@ -157,7 +156,7 @@ function containsDomesticated(generation, generationNum) {
       foodTotal += divideFoodIndividual(generation[wolf])
       foodTotal += divideFoodHumans(generation[wolf])
 
-      console.log('gathered ' + foodTotal + ' food');
+      console.log('gathered ' + foodTotal + ' food')
       return true
     }
   }
@@ -182,7 +181,7 @@ while (!metRequirement) {
   // If there is a domesticated dog, do not finsh this generation
   metRequirement = containsDomesticated(generation, generationNum)
   if (metRequirement) {
-    break;
+    break
   }
 
   // Calculate food values for a the current generation
@@ -215,7 +214,7 @@ while (!metRequirement) {
     if (generation[wolf].food > lowest) {
       // Find the key of the lowest value
       for (let key in bestWolves) {
-        if (bestWolves[key].food == lowest) {
+        if (bestWolves[key].food === lowest) {
           delete bestWolves[key]
           bestWolves[wolf] = generation[wolf]
         }
@@ -239,20 +238,20 @@ while (!metRequirement) {
   for (let i = 0; i < 2; i++) {
     for (let wolf in bestWolves) {
       newGeneration[currentWolf] = {
-        "pack": topWolf.pack,
-        "aggression": bestWolves[wolf].aggression,
-        "fear": topWolf.fear,
-        "plasticity": topWolf.plasticity,
-        "playfullness": bestWolves[wolf].playfullness,
+        'pack': topWolf.pack,
+        'aggression': bestWolves[wolf].aggression,
+        'fear': topWolf.fear,
+        'plasticity': topWolf.plasticity,
+        'playfullness': bestWolves[wolf].playfullness
       }
       currentWolf += 1
 
       newGeneration[currentWolf] = {
-        "pack": bestWolves[wolf].pack,
-        "aggression": topWolf.aggression,
-        "fear": bestWolves[wolf].fear,
-        "plasticity": bestWolves[wolf].plasticity,
-        "playfullness": topWolf.playfullness,
+        'pack': bestWolves[wolf].pack,
+        'aggression': topWolf.aggression,
+        'fear': bestWolves[wolf].fear,
+        'plasticity': bestWolves[wolf].plasticity,
+        'playfullness': topWolf.playfullness
       }
       currentWolf += 1
     }
@@ -274,22 +273,22 @@ while (!metRequirement) {
     switch (toBeMutatedIndex) {
       case 0:
         toBeMutatedName = 'pack'
-        break;
+        break
       case 1:
         toBeMutatedName = 'aggression'
-        break;
+        break
       case 2:
         toBeMutatedName = 'fear'
-        break;
+        break
       case 3:
         toBeMutatedName = 'plasticity'
-        break;
+        break
       case 4:
         toBeMutatedName = 'playfullness'
-        break;
+        break
       default:
         toBeMutatedName = 'fear'
-        break;
+        break
     }
 
     let newValue = bound(newGeneration[wolf][toBeMutatedName] + 0.15 * Math.random() - 0.1)
